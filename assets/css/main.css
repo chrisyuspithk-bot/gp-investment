@@ -386,8 +386,6 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
 .partner-tile:hover { filter: grayscale(0); opacity: 1; box-shadow: var(--shadow-card); }
 .partner-name { font-family: var(--font-display); font-weight: 700; color: var(--gp-slate-900); }
 .partner-role { font-size: 0.8125rem; color: var(--gp-slate-500); }
-.partner-tbd { border-style: dashed; border-color: var(--gp-slate-300); background: transparent; }
-.partner-tbd .partner-name { color: var(--gp-slate-300); font-weight: 600; }
 
 .cta-band {
   position: relative; overflow: hidden;
@@ -535,7 +533,6 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
 .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
 .data-table tbody tr:hover { background: var(--gp-slate-50); }
 .data-table tbody th { font-weight: 600; color: var(--gp-slate-900); }
-.table-note { margin-top: 16px; font-size: 0.875rem; color: var(--gp-slate-500); }
 .intro-para { max-width: 760px; }
 
 .chip {
@@ -544,11 +541,6 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
   font-size: 0.75rem; font-weight: 600; white-space: nowrap;
 }
 .chip-gold { background: var(--gp-gold-400); color: var(--gp-ink-900); }
-.tbd-pill {
-  display: inline-block; border: 1px dashed var(--gp-slate-300); border-radius: 999px;
-  padding: 4px 12px; font-size: 0.75rem; font-weight: 500; color: var(--gp-slate-500);
-  background: var(--gp-slate-50); white-space: nowrap;
-}
 
 .moat-grid { display: grid; gap: 20px; grid-template-columns: 1fr; }
 .moat-card {
@@ -608,18 +600,24 @@ body.menu-open .mobile-menu { transform: translateX(0); visibility: visible; }
 .contact-list .icon { width: 22px; height: 22px; color: var(--gp-blue-600); flex-shrink: 0; margin-top: 3px; }
 .contact-list div { display: flex; flex-direction: column; gap: 2px; }
 .contact-label { font-size: 0.8125rem; font-weight: 600; color: var(--gp-slate-500); }
-.map-placeholder {
-  aspect-ratio: 16 / 9; border-radius: var(--radius-md);
-  border: 1px dashed var(--gp-slate-300);
-  background:
-    linear-gradient(rgba(29, 91, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(29, 91, 255, 0.05) 1px, transparent 1px),
-    var(--gp-slate-50);
-  background-size: 28px 28px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  color: var(--gp-slate-500); font-size: 0.875rem; font-weight: 500;
+.address-card {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gp-slate-100);
+  background: var(--gp-slate-50);
+  padding: 24px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
 }
-.map-pin-icon { width: 32px; height: 32px; color: var(--gp-slate-300); }
+.address-card address {
+  font-style: normal; font-size: 0.9375rem; line-height: 1.6;
+  color: var(--gp-slate-700);
+}
+.address-card .map-link {
+  font-size: 0.875rem; font-weight: 600; color: var(--gp-blue-600);
+  text-decoration: none;
+  transition: color 200ms var(--ease-out);
+}
+.address-card .map-link:hover { color: var(--gp-blue-800); }
+.map-pin-icon { width: 28px; height: 28px; color: var(--gp-blue-600); }
 
 .form-lead { color: var(--gp-slate-500); margin-bottom: 28px; }
 .form-row { display: grid; gap: 20px; grid-template-columns: 1fr; }

@@ -229,7 +229,6 @@ const home = {
         { name: 'OrchardTech Greenova Group', role: '母公司 · 資源協同' },
         { name: '香港優質教育基金', role: '政策對接' },
       ],
-      tbd: '預留位置',
     },
     'zh-Hans': {
       overline: '合作伙伴',
@@ -238,7 +237,6 @@ const home = {
         { name: 'OrchardTech Greenova Group', role: '母公司 · 资源协同' },
         { name: '香港优质教育基金', role: '政策对接' },
       ],
-      tbd: '预留位置',
     },
     en: {
       overline: 'Partners',
@@ -247,7 +245,6 @@ const home = {
         { name: 'OrchardTech Greenova Group', role: 'Parent Company · Resource Synergy' },
         { name: 'Quality Education Fund', role: 'Policy Alignment' },
       ],
-      tbd: 'Reserved',
     },
   },
   cta: {
@@ -555,8 +552,6 @@ const patents = {
       intro: 'GP Investment Group Limited 持續投入AI技術研發，已累計申請 <strong>12項核心技術專利</strong>，其中 <strong>2項已獲正式授權</strong>。',
       caption: 'GP Investment 專利領域、數量與狀態概覽',
       cols: ['專利領域', '數量', '狀態'],
-      tbd: '待補充 · TBD',
-      note: '如已有具體專利名稱或編號，可在此詳細列出。',
       rows: [
         { area: 'AI算力本地部署與優化', status: '申請中/已授權' },
         { area: 'RAG知識庫系統架構', status: '申請中/已授權' },
@@ -569,8 +564,6 @@ const patents = {
       intro: 'GP Investment Group Limited 持续投入AI技术研发，已累计申请 <strong>12项核心技术专利</strong>，其中 <strong>2项已获正式授权</strong>。',
       caption: 'GP Investment 专利领域、数量与状态概览',
       cols: ['专利领域', '数量', '状态'],
-      tbd: '待补充 · TBD',
-      note: '如已有具体专利名称或编号，可在此详细列出。',
       rows: [
         { area: 'AI算力本地部署与优化', status: '申请中/已授权' },
         { area: 'RAG知识库系统架构', status: '申请中/已授权' },
@@ -583,8 +576,6 @@ const patents = {
       intro: 'GP Investment Group Limited continuously invests in AI technology R&D, with a cumulative total of <strong>12 core technology patents</strong> filed, of which <strong>2 have been officially granted</strong>.',
       caption: 'Overview of GP Investment patent areas, counts and status',
       cols: ['Patent Area', 'Count', 'Status'],
-      tbd: 'TBC · TBD',
-      note: 'Specific patent names or numbers can be detailed here if available.',
       rows: [
         { area: 'AI On-Premise Deployment & Optimization', status: 'Filed/Granted' },
         { area: 'RAG Knowledge Base System Architecture', status: 'Filed/Granted' },
@@ -817,7 +808,6 @@ const contact = {
     en: { h1: 'Contact Us', sub: 'Talk to our team about AI digitalization — we\'re happy to provide expert advice.' },
   },
   infoTitle: { 'zh-Hant': '香港總部', 'zh-Hans': '香港总部', en: 'Hong Kong Headquarters' },
-  mapPlaceholder: { 'zh-Hant': '地圖預留位置', 'zh-Hans': '地图预留位置', en: 'Map placeholder' },
   section: { 'zh-Hant': '01 · 聯絡方式與業務諮詢', 'zh-Hans': '01 · 联系方式与业务咨询', en: '01 · Contact & Business Enquiry' },
 };
 

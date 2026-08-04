@@ -415,10 +415,6 @@ ${pillars}
         <p class="overline partners-overline" data-reveal>${pt.overline}</p>
         <div class="partners-row">
 ${partners}
-          <!-- TBD: 更多合作夥伴 / 更多合作伙伴 / more partners -->
-          <div class="partner-tile partner-tbd" data-reveal>
-            <span class="partner-name">${pt.tbd}</span>
-          </div>
         </div>
       </div>
     </section>
@@ -563,8 +559,7 @@ function renderPatents(locale) {
   const rows = ov.rows.map((r) => `
               <tr>
                 <th scope="row">${r.area}</th>
-                <!-- TBD: 專利領域數量 / patent count per area — client to supply -->
-                <td><span class="tbd-pill">${ov.tbd}</span></td>
+                <td>—</td>
                 <td><span class="chip chip-gold">${r.status}</span></td>
               </tr>`).join('');
   const moatCards = moat.items.map((m) => `
@@ -606,8 +601,7 @@ ${rows}
             </tbody>
           </table>
         </div>
-        <!-- TBD: 具體專利名稱/編號 / patent names & numbers -->
-        <p class="table-note" data-reveal>${ov.note}</p>
+
       </div>
     </section>
     <section class="section section-tint" id="s3-moat">
@@ -742,10 +736,10 @@ function renderContact(locale) {
               <li>${icon('fax')}<div><span class="contact-label">${cl.fax}</span><span>${ct.fax}</span></div></li>
               <li>${icon('mail')}<div><span class="contact-label">${cl.email}</span><a href="mailto:${ct.email}">${ct.email}</a></div></li>
             </ul>
-            <!-- IMG:TBD: 地圖/Map placeholder — Google Maps embed optional -->
-            <div class="map-placeholder" role="img" aria-label="${d.mapPlaceholder[locale]}">
+            <div class="address-card">
               ${icon('pin', 'map-pin-icon')}
-              <span>${d.mapPlaceholder[locale]}</span>
+              <address>${ct.address[locale]}</address>
+              <a href="https://maps.google.com/?q=Shui+On+Centre,+6-8+Harbour+Road,+Wan+Chai,+Hong+Kong" target="_blank" rel="noopener" class="map-link">${locale === 'en' ? 'View on Google Maps →' : locale === 'zh-Hans' ? '在 Google 地图查看 →' : '在 Google 地圖查看 →'}</a>
             </div>
           </div>
           <div class="contact-form-wrap" data-reveal>
