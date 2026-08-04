@@ -17,6 +17,8 @@ python3 -m http.server 8000    # or: npm run serve
 
 Deploy by serving the repo root with any static host (GitHub Pages, Cloudflare Pages, nginx, …).
 
+**GitHub Pages:** the site is live at <https://chrisyuspithk-bot.github.io/gp-investment/> (source: `main` branch, root). All in-document links are deliberately **relative**, so the same build works from the Pages sub-path and from a custom domain root — when a custom domain (e.g. `www.gpinvestment.com`) is attached later, no rebuild is needed. Canonical/OG/sitemap metadata always points at the production domain (`https://www.gpinvestment.com`) as required for SEO.
+
 ## Repository layout
 
 ```

@@ -19,6 +19,20 @@ const OG_FILE = { 'zh-Hant': 'og-zh-hant.png', 'zh-Hans': 'og-zh-hans.png', en: 
 function urlFor(locale, page) {
   return LOCALE_PREFIX[locale] + C.SLUGS[page];
 }
+/* Pages are emitted as root-relative absolute paths (urlFor) for canonical/OG/
+   sitemap metadata, but every in-document link is RELATIVE so the same build
+   works from a domain root (custom domain) and from a sub-path (GitHub Pages
+   project site) without rebuilding. */
+function depthOf(locale, page) {
+  return (locale === 'zh-Hant' ? 0 : 1) + (page === 'home' ? 0 : 1);
+}
+function relFor(fromLocale, fromPage, toAbsPath) {
+  const t = toAbsPath.replace(/^\//, '');
+  return '../'.repeat(depthOf(fromLocale, fromPage)) + (t === '' ? './' : t);
+}
+function assetFor(fromLocale, fromPage, assetPath) {
+  return '../'.repeat(depthOf(fromLocale, fromPage)) + assetPath.replace(/^\//, '');
+}
 function outPath(locale, page) {
   const p = urlFor(locale, page);
   return path.join(ROOT, p === '/' ? 'index.html' : p, p === '/' ? '' : 'index.html');
@@ -82,8 +96,8 @@ function logoSvg(id, monoCls) {
     <text x="22" y="28.5" text-anchor="middle" font-family="Sora,'Space Grotesk',sans-serif" font-size="17" font-weight="800" fill="#fff" letter-spacing="0.5">GP</text>
   </svg>`;
 }
-function logo(locale, id) {
-  return `<a class="logo" href="${urlFor(locale, 'home')}" aria-label="GP Investment Group Limited — ${C.ui[locale].nav.home}">
+function logo(locale, page, id) {
+  return `<a class="logo" href="${relFor(locale, page, urlFor(locale, 'home'))}" aria-label="GP Investment Group Limited — ${C.ui[locale].nav.home}">
     ${logoSvg(id)}
     <span class="logo-word"><span class="logo-name">GP INVESTMENT</span><span class="logo-sub">GROUP LIMITED</span></span>
   </a>`;
@@ -153,8 +167,9 @@ function head(locale, page, meta) {
   const ogImage = `${C.BASE_URL}/assets/img/${OG_FILE[locale]}`;
   const loc = C.LOCALES.find((l) => l.code === locale);
   const others = LOCALES.filter((l) => l !== locale).map((l) => C.LOCALES.find((x) => x.code === l).ogLocale);
+  const homeMap = LOCALES.map((l) => `'${l}':'${relFor(locale, page, urlFor(l, 'home'))}'`).join(',');
   const redirectScript = page === 'home'
-    ? `  <script>(function(){try{var p=localStorage.getItem('gp-locale');var m={'zh-Hant':'/','zh-Hans':'/zh-hans/','en':'/en/'};if(p&&m[p]&&p!==document.documentElement.lang&&location.pathname===m[document.documentElement.lang]){location.replace(m[p]);}}catch(e){}})();</script>\n`
+    ? `  <script>(function(){try{var p=localStorage.getItem('gp-locale');var m={${homeMap}};if(p&&m[p]&&p!==document.documentElement.lang){location.replace(m[p]);}}catch(e){}})();</script>\n`
     : '';
   return `<head>
   <meta charset="utf-8">
@@ -178,14 +193,14 @@ ${others.map((o) => `  <meta property="og:locale:alternate" content="${o}">`).jo
   <meta name="twitter:description" content="${esc(meta.description)}">
   <meta name="twitter:image" content="${ogImage}">
   <meta name="theme-color" content="#071126">
-  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/assets/img/favicon-32x32.png" sizes="32x32" type="image/png">
-  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="icon" href="${assetFor(locale, page, 'assets/img/favicon.svg')}" type="image/svg+xml">
+  <link rel="icon" href="${assetFor(locale, page, 'assets/img/favicon-32x32.png')}" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="${assetFor(locale, page, 'assets/img/apple-touch-icon.png')}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="${fontsUrl(locale)}">
 ${extraFontLinks(locale)}
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="${assetFor(locale, page, 'assets/css/main.css')}">
 ${redirectScript}${jsonLd(locale, page)}
 </head>`;
 }
@@ -194,7 +209,7 @@ function langSwitcher(locale, page, idPrefix) {
   const u = C.ui[locale];
   const segs = C.LOCALES.map((l) => {
     const active = l.code === locale;
-    return `      <a class="seg${active ? ' is-active' : ''}" href="${urlFor(l.code, page)}" hreflang="${l.code}" lang="${l.code}"${active ? ' aria-current="true"' : ''} data-lang-switch="${l.code}"${active ? '' : ''}>${l.short}</a>`;
+    return `      <a class="seg${active ? ' is-active' : ''}" href="${relFor(locale, page, urlFor(l.code, page))}" hreflang="${l.code}" lang="${l.code}"${active ? ' aria-current="true"' : ''} data-lang-switch="${l.code}">${l.short}</a>`;
   }).join('\n');
   return `    <div class="seg-ctrl" role="group" aria-label="${u.langSwitch}" id="${idPrefix}">
 ${segs}
@@ -205,16 +220,16 @@ function header(locale, page) {
   const u = C.ui[locale];
   const links = C.PAGES.map((p) => {
     const active = p === page;
-    return `        <li><a href="${urlFor(locale, p)}"${active ? ' aria-current="page" class="is-active"' : ''}>${u.nav[p]}</a></li>`;
+    return `        <li><a href="${relFor(locale, page, urlFor(locale, p))}"${active ? ' aria-current="page" class="is-active"' : ''}>${u.nav[p]}</a></li>`;
   }).join('\n');
   const mLinks = C.PAGES.map((p) => {
     const active = p === page;
-    return `        <li><a href="${urlFor(locale, p)}"${active ? ' aria-current="page" class="is-active"' : ''}>${u.nav[p]}</a></li>`;
+    return `        <li><a href="${relFor(locale, page, urlFor(locale, p))}"${active ? ' aria-current="page" class="is-active"' : ''}>${u.nav[p]}</a></li>`;
   }).join('\n');
   return `  <a class="skip-link" href="#main">${u.skip}</a>
   <header class="site-header" id="site-header">
     <div class="header-inner">
-      ${logo(locale, 'lg-h')}
+      ${logo(locale, page, 'lg-h')}
       <nav class="main-nav" aria-label="${u.navAria}">
         <ul>
 ${links}
@@ -222,7 +237,7 @@ ${links}
       </nav>
       <div class="header-actions">
         ${langSwitcher(locale, page, 'sw-header')}
-        <a class="btn btn-primary btn-sm header-cta" href="${urlFor(locale, 'solutions')}">${u.cta}</a>
+        <a class="btn btn-primary btn-sm header-cta" href="${relFor(locale, page, urlFor(locale, 'solutions'))}">${u.cta}</a>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="${u.menuOpen}" data-label-close="${u.menuClose}" data-menu-toggle>
           <span class="menu-toggle-open">${ICONS.menu}</span>
           <span class="menu-toggle-close">${ICONS.close}</span>
@@ -238,7 +253,7 @@ ${mLinks}
     </nav>
     <div class="mobile-menu-foot">
       ${langSwitcher(locale, page, 'sw-mobile')}
-      <a class="btn btn-primary" href="${urlFor(locale, 'solutions')}">${u.cta}</a>
+      <a class="btn btn-primary" href="${relFor(locale, page, urlFor(locale, 'solutions'))}">${u.cta}</a>
     </div>
   </div>`;
 }
@@ -247,7 +262,7 @@ function footer(locale, page) {
   const u = C.ui[locale];
   const ct = C.CONTACT;
   const cl = u.contactLabels;
-  const navLinks = C.PAGES.map((p) => `            <li><a href="${urlFor(locale, p)}">${u.nav[p]}</a></li>`).join('\n');
+  const navLinks = C.PAGES.map((p) => `            <li><a href="${relFor(locale, page, urlFor(locale, p))}">${u.nav[p]}</a></li>`).join('\n');
   return `  <footer class="site-footer">
     <div class="container footer-grid">
       <div class="footer-brand">
@@ -308,11 +323,11 @@ function heroCompact(locale, h) {
     </section>`;
 }
 
-function ctaBand(locale, c) {
+function ctaBand(locale, page, c) {
   return `    <section class="cta-band">
       <div class="container cta-inner" data-reveal>
         <h2>${c.heading}</h2>
-        <a class="btn btn-primary btn-lg" href="${urlFor(locale, 'contact')}">${c.button} ${icon('arrow', 'icon-arrow')}</a>
+        <a class="btn btn-primary btn-lg" href="${relFor(locale, page, urlFor(locale, 'contact'))}">${c.button} ${icon('arrow', 'icon-arrow')}</a>
       </div>
     </section>`;
 }
@@ -327,7 +342,7 @@ ${header(locale, page)}
 ${main}
   </main>
 ${footer(locale, page)}
-  <script src="/assets/js/main.js" defer></script>
+  <script src="${assetFor(locale, page, 'assets/js/main.js')}" defer></script>
 </body>
 </html>
 `;
@@ -354,7 +369,7 @@ function renderHome(locale) {
             <div class="pillar-icon">${icon(it.icon)}</div>
             <h3>${it.title}</h3>
             <p>${it.desc}</p>
-            <a class="text-link" href="${urlFor(locale, it.page)}${it.anchor ? '#' + it.anchor : ''}">${u.learnMore} ${icon('arrow', 'icon-arrow')}</a>
+            <a class="text-link" href="${relFor(locale, 'home', urlFor(locale, it.page))}${it.anchor ? '#' + it.anchor : ''}">${u.learnMore} ${icon('arrow', 'icon-arrow')}</a>
           </article>`).join('');
   const partners = pt.items.map((x) => `
           <div class="partner-tile" data-reveal>
@@ -368,8 +383,8 @@ function renderHome(locale) {
           <h1 data-reveal>${h.h1[0]}<br><span class="hero-grad">${h.h1[1]}</span></h1>
           <p class="hero-sub" data-reveal>${h.sub}</p>
           <div class="hero-ctas" data-reveal>
-            <a class="btn btn-primary btn-lg" href="${urlFor(locale, 'solutions')}">${h.ctaPrimary} ${icon('arrow', 'icon-arrow')}</a>
-            <a class="btn btn-secondary btn-lg" href="${urlFor(locale, 'opportunities')}">${h.ctaSecondary}</a>
+            <a class="btn btn-primary btn-lg" href="${relFor(locale, 'home', urlFor(locale, 'solutions'))}">${h.ctaPrimary} ${icon('arrow', 'icon-arrow')}</a>
+            <a class="btn btn-secondary btn-lg" href="${relFor(locale, 'home', urlFor(locale, 'opportunities'))}">${h.ctaSecondary}</a>
           </div>
         </div>
         <div class="hero-visual" aria-hidden="true">
@@ -407,7 +422,7 @@ ${partners}
         </div>
       </div>
     </section>
-${ctaBand(locale, d.cta[locale])}`;
+${ctaBand(locale, 'home', d.cta[locale])}`;
   return pageShell(locale, 'home', d.meta[locale], main);
 }
 
@@ -703,7 +718,7 @@ ${sumRows}
         </div>
       </div>
     </section>
-${ctaBand(locale, d.cta[locale])}`;
+${ctaBand(locale, 'opportunities', d.cta[locale])}`;
   return pageShell(locale, 'opportunities', d.meta[locale], main);
 }
 
@@ -793,14 +808,26 @@ function render404() {
     return `        <section class="nf-locale" lang="${l}">
           <h2>${u.notFound.title}</h2>
           <p>${u.notFound.body}</p>
-          <a class="btn btn-secondary" href="${urlFor(l, 'home')}" hreflang="${l}">${u.notFound.back} ${icon('arrow', 'icon-arrow')}</a>
+          <a class="btn btn-secondary" href="${relFor('zh-Hant', 'home', urlFor(l, 'home'))}" hreflang="${l}">${u.notFound.back} ${icon('arrow', 'icon-arrow')}</a>
         </section>`;
   }).join('\n');
+  /* 404 pages are served at the (arbitrary-depth) URL that was not found, so
+     relative asset links can miss on deep paths. This minimal inline fallback
+     keeps the message legible even when main.css fails to load. */
+  const fallbackCss = `  <style>
+    body{margin:0;background:#071126;color:#E8EEF7;font-family:Inter,'Noto Sans TC',system-ui,sans-serif}
+    .nf-hero{min-height:70vh;display:flex;align-items:center;text-align:center}
+    .nf-hero a{color:#7FB3FF}
+    .nf-code{font-size:clamp(5rem,18vw,9rem);font-weight:800;color:#1D5BFF;margin:0}
+    .nf-locale{margin:2rem auto;max-width:36rem}
+  </style>
+</head>`;
   const headBlock = head('zh-Hant', 'home', {
     title: '404 | GP Investment Group Limited',
     description: '404 — Page not found | 找不到頁面 | 找不到页面',
   }).replace(`<link rel="canonical" href="${C.BASE_URL}/">`, '<meta name="robots" content="noindex, follow">')
-    .replace(/  <link rel="alternate"[^\n]*\n/g, '');
+    .replace(/  <link rel="alternate"[^\n]*\n/g, '')
+    .replace('</head>', fallbackCss);
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
 ${headBlock}
@@ -815,7 +842,7 @@ ${blocks}
     </section>
   </main>
 ${footer('zh-Hant', 'home')}
-  <script src="/assets/js/main.js" defer></script>
+  <script src="${assetFor('zh-Hant', 'home', 'assets/js/main.js')}" defer></script>
 </body>
 </html>
 `;
