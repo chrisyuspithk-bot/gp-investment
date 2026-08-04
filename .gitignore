@@ -1,0 +1,8 @@
+# Font binaries used only at asset-generation time (re-fetch via scripts/fetch-fonts.sh)
+scripts/fonts/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.log
+node_modules/

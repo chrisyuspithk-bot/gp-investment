@@ -1,0 +1,88 @@
+{
+  "project": {
+    "name": "GP Investment Group Limited",
+    "brand": "GP",
+    "foundingYear": 2022,
+    "baseUrl": "https://www.gpinvestment.com",
+    "baseUrlStatus": "TBD",
+    "defaultLocale": "zh-Hant",
+    "parentCompany": "OrchardTech Greenova Group"
+  },
+  "locales": [
+    { "code": "zh-Hant", "label": "繁體中文", "short": "繁", "dir": "ltr", "font": "Noto Sans TC" },
+    { "code": "zh-Hans", "label": "简体中文", "short": "简", "dir": "ltr", "font": "Noto Sans SC" },
+    { "code": "en", "label": "English", "short": "EN", "dir": "ltr", "font": "Inter" }
+  ],
+  "navigation": {
+    "zh-Hant": [
+      { "label": "首頁", "href": "/" },
+      { "label": "關於我們", "href": "/about/" },
+      { "label": "產品與解決方案", "href": "/solutions/" },
+      { "label": "專利與技術", "href": "/patents/" },
+      { "label": "市場機遇", "href": "/opportunities/" },
+      { "label": "聯絡我們", "href": "/contact/" }
+    ],
+    "zh-Hans": [
+      { "label": "首页", "href": "/zh-hans/" },
+      { "label": "关于我们", "href": "/zh-hans/about/" },
+      { "label": "产品与解决方案", "href": "/zh-hans/solutions/" },
+      { "label": "专利与技术", "href": "/zh-hans/patents/" },
+      { "label": "市场机遇", "href": "/zh-hans/opportunities/" },
+      { "label": "联系我们", "href": "/zh-hans/contact/" }
+    ],
+    "en": [
+      { "label": "Home", "href": "/en/" },
+      { "label": "About Us", "href": "/en/about/" },
+      { "label": "Products & Solutions", "href": "/en/solutions/" },
+      { "label": "Patents & Technology", "href": "/en/patents/" },
+      { "label": "Market Opportunities", "href": "/en/opportunities/" },
+      { "label": "Contact Us", "href": "/en/contact/" }
+    ],
+    "cta": {
+      "zh-Hant": { "label": "探索AI方案", "href": "/solutions/" },
+      "zh-Hans": { "label": "探索AI方案", "href": "/zh-hans/solutions/" },
+      "en": { "label": "Explore AI Solutions", "href": "/en/solutions/" }
+    }
+  },
+  "footer": {
+    "legal": {
+      "zh-Hant": { "privacy": "私隱政策", "terms": "使用條款" },
+      "zh-Hans": { "privacy": "隐私政策", "terms": "使用条款" },
+      "en": { "privacy": "Privacy Policy", "terms": "Terms of Use" }
+    },
+    "copyright": "© 2026 GP Investment Group Limited. All rights reserved."
+  },
+  "contact": {
+    "address": {
+      "zh-Hant": "香港灣仔港灣道6-8號瑞安中心19樓1906-07室",
+      "zh-Hans": "香港湾仔港湾道6-8号瑞安中心19楼1906-07室",
+      "en": "Unit 1906-07, 19/F, Shui On Centre, 6-8 Harbour Road, Wan Chai, Hong Kong"
+    },
+    "tel": "(+852) 3628 3499",
+    "fax": "(+852) 3628 3498",
+    "email": "info@gpinvestment.com"
+  },
+  "form": {
+    "fields": ["name", "company", "email", "phone", "interest", "message"],
+    "interestOptions": [
+      "education-ai", "enterprise-ai", "ai-compute-server", "rag-platform", "ai-middleware", "partnership", "other"
+    ],
+    "endpoint": "FORM_ENDPOINT_PLACEHOLDER"
+  },
+  "seo": {
+    "sitemap": true,
+    "robots": true,
+    "jsonld": ["Organization", "WebSite", "BreadcrumbList"],
+    "ogImage": "og-{locale}.png",
+    "hreflang": ["zh-Hant", "zh-Hans", "en"]
+  },
+  "tbd": [
+    "Patent counts per area (pages/04-patents.md)",
+    "Patent names/numbers",
+    "Additional partner logos",
+    "Privacy / Terms pages",
+    "Production domain",
+    "Contact form endpoint",
+    "Verify official policy names and figures before launch"
+  ]
+}

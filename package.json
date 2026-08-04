@@ -1,0 +1,11 @@
+{
+  "name": "gp-investment-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GP Investment Group Limited — trilingual corporate marketing website (static, zero-dependency build)",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "python3 -m http.server 8000",
+    "images": "python3 scripts/make-images.py"
+  }
+}
